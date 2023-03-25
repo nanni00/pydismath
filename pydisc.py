@@ -1,13 +1,11 @@
-from math import sqrt, floor, gcd, lcm
 import utils
-from collections import defaultdict
 
 
 def _get_input(requireds: dict[str: int]):
     inputs = []
     for k, v in requireds.items():
         if v is int: inputs.append(int(input(f"Insert number {k}: ")))
-    return inputs
+    return inputs if len(inputs) > 1 else inputs[0]
 
 
 def _print_header_footer(title, header=True):
@@ -22,7 +20,7 @@ def dm_GCD():
     """ Greatest Common Divisor """
     _print_header_footer('Greatest Common Divisor')
     a, b = _get_input({'a': int, 'b': int})
-    print(f'GCD({a},{b}) = {gcd(a, b)}')
+    print(f'GCD({a},{b}) = {utils.my_gcd(a, b)}')
     _print_header_footer('Greatest Common Divisor', header=False)
 
 
@@ -30,7 +28,7 @@ def dm_LCM():
     """ Least Common Multiple """
     _print_header_footer('Least Common Multiple')
     a, b = _get_input({'a': int, 'b': int})
-    print(f'LCM({a}, {b}) = {lcm(a, b)}')
+    print(f'LCM({a}, {b}) = {utils.my_lcm(a, b)}')
     _print_header_footer('Least Common Multiple', header=False)
 
 
@@ -53,39 +51,17 @@ def dm_fermat_factorization():
         return s[:-2]        
 
     _print_header_footer('Fermat Factorization')
-    user_n = _get_input({'n': int})
-    factors = defaultdict(int)
-    q = [user_n]
-    
-    while q:
-        n = q.pop()
-        if n % 2 == 0: 
-            n /= 2
-            q.append(n)
-            factors[2] += 1
-        elif sqrt(n) == floor(sqrt(n)):
-            q.append(sqrt(n))
-            q.append(sqrt(n))
-        else:
-            x = floor(sqrt(n)) + 1
-            while (s := sqrt(pow(x, 2) - n)) != floor(s)  and x != (n + 1) / 2:
-                x += 1
+    n = _get_input({'n': int})
+    factors = utils.fermat_factorization(n)
             
-            v1, v2 = x + s, x - s
-            if utils.is_prime(v1): factors[v1] += 1  
-            else: q.append(v1) 
-            
-            if utils.is_prime(v2): factors[v2] += 1  
-            else: q.append(v2)
-            
-    print(f'Factors of {user_n} are {_print_factors(factors)}')
+    print(f'Factors of {n} are {_print_factors(factors)}')
     _print_header_footer('Fermat Factorization', header=False)
 
 
 def dm_bezout_identity():
     _print_header_footer("Bezout Identity")
     a, b = _get_input({'a': int, 'b': int})
-    _gcd, x, y = utils.my_gcd(a, b)
+    _gcd, x, y = utils.my_gcd(a, b, True)
     print(f"MCD({a}, {b}) = {a}*x + {b}*y = {a}*{x} + {b}*{y} = {_gcd}")
     _print_header_footer("Bezout Identity", header=False)
 

@@ -1,4 +1,5 @@
-import math
+from math import sqrt, floor, gcd, lcm
+from collections import defaultdict
 
 
 def sign(x):
@@ -6,13 +7,16 @@ def sign(x):
 
 
 def is_prime(n):
-    for i in range(2,int(math.sqrt(n))+1):
+    for i in range(2,int(sqrt(n))+1):
       if (n%i) == 0:
         return False
     return True
 
 
-def my_gcd(a, b):
+def my_lcm(a, b): return lcm(a, b)
+
+
+def my_gcd(a, b, with_bezout_id=False):
     """
     Returns a list `result` of size 3 where:
     Referring to the equation ax + by = gcd(a, b)
@@ -34,8 +38,35 @@ def my_gcd(a, b):
     return [old_r, old_s, old_t]
 
 
+def fermat_factorization(n):
+    factors = defaultdict(int)
+    q = [n]
+    
+    while q:
+        n = q.pop()
+        if n % 2 == 0: 
+            n /= 2
+            q.append(n)
+            factors[2] += 1
+        elif sqrt(n) == floor(sqrt(n)):
+            q.append(sqrt(n))
+            q.append(sqrt(n))
+        else:
+            x = floor(sqrt(n)) + 1
+            while (s := sqrt(pow(x, 2) - n)) != floor(s)  and x != (n + 1) / 2:
+                x += 1
+            
+            v1, v2 = x + s, x - s
+            if is_prime(v1): factors[v1] += 1  
+            else: q.append(v1) 
+            
+            if is_prime(v2): factors[v2] += 1  
+            else: q.append(v2)
+    return factors
+
+
 def diofantine_equation(a: int, b: int, c: int):
-    g, x, y = my_gcd(a, b)
+    g, x, y = my_gcd(a, b, True)
 
     if c % g != 0: return None, None, None, None
 
@@ -45,14 +76,10 @@ def diofantine_equation(a: int, b: int, c: int):
 
 
 def linear_congruence(a, b, n):
-   g, x, _ = my_gcd(a, n)
+    g, x, _ = my_gcd(a, n, True)
+    if b % g != 0: return None, None
 
-   if b % g != 0: return None, None
-
-   x, xk, _, _ = diofantine_equation(a, n, b)
-
-   z_sol = (x, xk)
-
-   zn_sol = [x + int((n * k) / g) for k in range(g)]
-
-   return z_sol, zn_sol
+    x, xk, _, _ = diofantine_equation(a, n, b)
+    z_sol = (x, xk)
+    zn_sol = [x + int((n * k) / g) for k in range(g)]
+    return z_sol, zn_sol
