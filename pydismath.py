@@ -16,7 +16,7 @@ def _print_header_footer(title, header=True):
     else: print('='* (tot_len + 1))
 
 
-def dm_Greatest_Common_Divisor():
+def dm_greatest_common_divisor():
     """ Greatest Common Divisor """
     _print_header_footer('Greatest Common Divisor')
     a, b = _get_input({'a': int, 'b': int})
@@ -24,7 +24,7 @@ def dm_Greatest_Common_Divisor():
     _print_header_footer('Greatest Common Divisor', header=False)
 
 
-def dm_Least_Common_Multiple():
+def dm_least_common_multiple():
     """ Least Common Multiple """
     _print_header_footer('Least Common Multiple')
     a, b = _get_input({'a': int, 'b': int})
