@@ -16,15 +16,15 @@ def _print_header_footer(title, header=True):
     else: print('='* (tot_len + 1))
 
 
-def dm_GCD():
+def dm_Greatest_Common_Divisor():
     """ Greatest Common Divisor """
     _print_header_footer('Greatest Common Divisor')
     a, b = _get_input({'a': int, 'b': int})
-    print(f'GCD({a},{b}) = {utils.my_gcd(a, b)}')
+    print(f'GCD({a},{b}) = {utils.my_gcd(a, b)[0]}')
     _print_header_footer('Greatest Common Divisor', header=False)
 
 
-def dm_LCM():
+def dm_Least_Common_Multiple():
     """ Least Common Multiple """
     _print_header_footer('Least Common Multiple')
     a, b = _get_input({'a': int, 'b': int})
@@ -100,7 +100,7 @@ def print_menu():
         print('What you want to do?')
         options = [opt for opt in sorted(globals()) if opt.startswith(tag)]
         options = {i+1: opt for i, opt in enumerate(options)}
-        exit_key = 0
+        exit_key = 'Any key'
         options[exit_key] = 'Exit'
 
         for i, opt in options.items():
@@ -109,11 +109,13 @@ def print_menu():
             print(f'{i}: {o}')
 
         userin = input()
-        if userin == '' or int(userin) == exit_key: 
+        try:
+            userin = int(userin)
+        except ValueError:
             print('Bye!')
-            break
+            return
         
-        globals()[options[int(userin)]]()
+        globals()[options[userin]]()
         input()
 
 

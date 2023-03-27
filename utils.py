@@ -2,8 +2,7 @@ from math import sqrt, floor, gcd, lcm
 from collections import defaultdict
 
 
-def sign(x):
-   return -1 if x < 0 else 1
+def sign(x): return -1 if x < 0 else 1
 
 
 def is_prime(n):
