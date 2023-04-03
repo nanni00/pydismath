@@ -94,6 +94,18 @@ def dm_linear_congruence():
     _print_header_footer("Linear Congruence", header=False)
 
 
+def dm_euler_function():
+    _print_header_footer('Euler Function')
+    n = _get_input({'n': int})
+    ef = utils.euler_function(n)
+    if ef is None:
+        print(f'Input value n must be a natural number.')
+    else:
+        print(f'Euler function of {n} is: {ef}')
+    _print_header_footer('Euler Function', header=False)
+
+
+
 def print_menu():
     tag = 'dm_'
     while True:
@@ -111,6 +123,7 @@ def print_menu():
         userin = input()
         try:
             userin = int(userin)
+            if userin <= 0 or userin >= len(options): raise ValueError
         except ValueError:
             print('Bye!')
             return

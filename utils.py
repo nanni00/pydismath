@@ -1,4 +1,4 @@
-from math import sqrt, floor, gcd, lcm
+from math import sqrt, floor, gcd, lcm, pow
 from collections import defaultdict
 
 
@@ -82,3 +82,18 @@ def linear_congruence(a, b, n):
     z_sol = (x, xk)
     zn_sol = [x + int((n * k) / g) for k in range(g)]
     return z_sol, zn_sol
+
+
+def euler_function(n):
+    if n <= 0:
+        return None
+    else:
+        factors = fermat_factorization(n)
+        if 1 in factors.keys(): factors.pop(1)
+        ef = 1
+
+        for f, e in factors.items():
+            ef *= int(pow(f, e) - pow(f, e - 1)) 
+        return ef
+
+print(euler_function(39182))
