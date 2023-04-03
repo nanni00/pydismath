@@ -1,10 +1,15 @@
 import utils
 
 
-def _get_input(requireds: dict[str: int]):
+def _get_input(requireds: dict[str: int], info=None):
     inputs = []
+    print(info) if info is not None else None
     for k, v in requireds.items():
-        if v is int: inputs.append(int(input(f"Insert number {k}: ")))
+        try:
+            userin = input(f"Insert number {k}: ")
+            if v is int: inputs.append(int(userin))
+        except ValueError:
+            print('Input error, value not acceptable: ' + str(userin))
     return inputs if len(inputs) > 1 else inputs[0]
 
 
@@ -13,7 +18,7 @@ def _print_header_footer(title, header=True):
     right = left = int((tot_len - len(title)) / 2)
     if header: print('='*left + ' ' + title + ' ' + '='*right)
     
-    else: print('='* (tot_len + 1))
+    else: print('='* max(tot_len + 1, right + left + 2 + len(title)))
 
 
 def dm_greatest_common_divisor():
@@ -68,8 +73,7 @@ def dm_bezout_identity():
 
 def dm_diophantine_equation():
     _print_header_footer("Diofantine Equation")
-    print("ax + by = c")
-    a, b, c = _get_input({'a': int, 'b': int, 'c': int})   
+    a, b, c = _get_input({'a': int, 'b': int, 'c': int}, "ax + by = c")
     x, xk, y, yk = utils.diofantine_equation(a, b, c)
     if x == None:
         print(f"The equation {a}x + {b}y = {c} hasn't solutions.")
@@ -98,12 +102,22 @@ def dm_euler_function():
     _print_header_footer('Euler Function')
     n = _get_input({'n': int})
     ef = utils.euler_function(n)
-    if ef is None:
-        print(f'Input value n must be a natural number.')
+    if type(ef) is not int:
+        print(ef)
     else:
         print(f'Euler function of {n} is: {ef}')
     _print_header_footer('Euler Function', header=False)
 
+
+def dm_find_modulus():
+    _print_header_footer('Find Modulus')
+    a, m, n =_get_input({'a': int, 'm': int, 'n': int}, 'a^m is ? in mod n')
+    r = utils.find_modul(a, m, n)
+    if type(r) is not int:
+        print(str(r))
+    else:
+        print(f'{a}^{m} is equal to {r} in Z-{n}.')
+    _print_header_footer('Find Modulus', header=False)
 
 
 def print_menu():
