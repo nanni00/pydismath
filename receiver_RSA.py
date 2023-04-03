@@ -12,7 +12,6 @@ PORT = int(sys.argv[1])
 
 
 def decode(c, d, n):
-    c = int(c)                
     return utils.find_modulus(c, d, n)
 
 
@@ -48,9 +47,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         while True:
             # receiving the encoded message blocks 
             the_message = ''
-            while not (c := conn.recv(32).decode('utf-8')).strip('0').startswith('close'):
-                print(f"Received block: {c}")
+            while not (c := conn.recv(32).decode('utf-8')).startswith('close'):
+                c = int(c)
+                print(f"Encoded block: {c}", end=' - ')
                 m = decode(c, d_sk, n_pk)
+                print(f"Decoded block: {str(m)}")
                 the_message += str(m)                                
 
             if c == 'close all': break

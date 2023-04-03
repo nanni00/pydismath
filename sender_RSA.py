@@ -9,7 +9,8 @@ HOST=sys.argv[1]
 PORT=int(sys.argv[2])
 
 
-def encode(m, n, e):
+def encode(m: int, n: int, e: int):
+    """ Simply calls utils.find_modulus """
     return utils.find_modulus(m, e, n)
 
 
@@ -37,7 +38,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         m_blocks = []
         if len_msg > n_pk_len:
             for i in range(0, len_msg, block_len):
-                m_blocks.append(int(str(the_message)[i: i + block_len]))
+                m_blocks.append(the_message[i: i + block_len])
         else:
             m_blocks = [the_message]
 
@@ -46,7 +47,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         # encoding the message
         c_blocks = []
         for M in m_blocks:
-            c_blocks.append(encode(M, n_pk, e_pk))
+            while M.startswith('0'):
+                c_blocks.append(encode(0, n_pk, e_pk))
+                M = M[1:]
+            if M != '':
+                c_blocks.append(encode(int(M), n_pk, e_pk))
 
         print(f"The encoded blocks are: {c_blocks}")
 
