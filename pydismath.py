@@ -120,6 +120,19 @@ def dm_find_modulus():
     _print_header_footer('Find Modulus', header=False)
 
 
+def dm_two_congruences_system():
+    _print_header_footer('Two Congruence System')
+    info = "x congr a1 mod n1\nx congr a2 mod n2"
+    a1, n1, a2, n2 = _get_input({'a1': int, 'n1': int, 'a2': int, 'n2': int}, info)
+
+    r = utils.two_congruence_system(a1, n1, a2, n2)
+
+    if type(r) is str: print(r)
+    else: print(f'The system has solution {r[0]} mod {r[1]}.')
+
+    _print_header_footer('Two Congruence System', False)
+
+
 def print_menu():
     tag = 'dm_'
     while True:

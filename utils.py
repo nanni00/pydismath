@@ -15,7 +15,7 @@ def is_prime(n):
 def my_lcm(a, b): return lcm(a, b)
 
 
-def my_gcd(a, b, with_bezout_id=False):
+def my_gcd(a, b):
     """
     Returns a list `result` of size 3 where:
     Referring to the equation ax + by = gcd(a, b)
@@ -97,7 +97,23 @@ def euler_function(n):
         return ef
 
 
-def find_modul(a, m, n): 
-    if gcd(a, n) != 1:
-        return f'Values {a} and {n} are not coprime.'
+def find_modulus(a, m, n): 
+    #if gcd(a, n) != 1: return f'Values {a} and {n} are not coprime.'
     return pow(a, m) % n
+
+
+def two_congruence_system(a1, n1, a2, n2):
+    """ Returns the solution of the system as a tuple (x, mod) """
+    g, x, y = my_gcd(n1, n2)
+    diff = a1 - a2
+    if diff % g != 0:
+        return 'The system has no solution.'
+    
+    x, y = x * int(diff / g), y * int(diff / g)
+
+    if a1 - n1 * x == a2 + n2 * y:
+        return find_modulus(a1 - n1 * x, 1, lcm(n1, n2)), lcm(n1, n2)
+
+
+print(two_congruence_system(13, 14, 3, 6))
+
