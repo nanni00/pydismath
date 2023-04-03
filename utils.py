@@ -1,15 +1,8 @@
-from math import sqrt, floor, gcd, lcm
+from math import sqrt, floor, lcm
 from collections import defaultdict
 
 
 def sign(x): return -1 if x < 0 else 1
-
-
-def is_prime(n):
-    for i in range(2,int(sqrt(n))+1):
-      if (n%i) == 0:
-        return False
-    return True
 
 
 def my_lcm(a, b): return lcm(a, b)
@@ -21,7 +14,9 @@ def my_gcd(a, b):
     Referring to the equation ax + by = gcd(a, b)
         result[0] is gcd(a, b)
         result[1] is x
-        result[2] is y 
+        result[2] is y
+    
+    Credits to https://www.rookieslab.com/posts/extended-euclid-algorithm-to-find-gcd-bezouts-coefficients-python-cpp-code
     """
     s = 0; old_s = 1
     t = 1; old_t = 0
@@ -35,6 +30,13 @@ def my_gcd(a, b):
         old_s, s = s, old_s - quotient*s
         old_t, t = t, old_t - quotient*t
     return [old_r, old_s, old_t]
+
+
+def is_prime(n):
+    for i in range(2,int(sqrt(n))+1):
+      if (n%i) == 0:
+        return False
+    return True
 
 
 def fermat_factorization(n):
@@ -115,4 +117,3 @@ def two_congruence_system(a1, n1, a2, n2):
 
     if a1 - n1 * x == a2 + n2 * y:
         return find_modulus(a1 - n1 * x, 1, lcm(n1, n2)), lcm(n1, n2)
-
