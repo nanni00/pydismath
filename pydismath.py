@@ -66,7 +66,7 @@ def dm_fermat_factorization():
 def dm_bezout_identity():
     _print_header_footer("Bezout Identity")
     a, b = _get_input({'a': int, 'b': int})
-    _gcd, x, y = utils.my_gcd(a, b, True)
+    _gcd, x, y = utils.my_gcd(a, b)
     print(f"MCD({a}, {b}) = {a}*x + {b}*y = {a}*{x} + {b}*{y} = {_gcd}")
     _print_header_footer("Bezout Identity", header=False)
 

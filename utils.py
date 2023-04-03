@@ -79,7 +79,7 @@ def diofantine_equation(a: int, b: int, c: int):
 def linear_congruence(a, b, n):
     ''' Solves the linear congruence ax congr b mod n. 
     If it hasn't solutions return an error string, otherwise a tuple with solutions in Z and in Zn. '''
-    g, x, _ = my_gcd(a, n, True)
+    g, x, _ = my_gcd(a, n)
     if b % g != 0: return 'The linear congruence has no solution.'
 
     x, xk, _, _ = diofantine_equation(a, n, b)
