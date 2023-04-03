@@ -12,7 +12,23 @@ PORT = int(sys.argv[1])
 
 
 def decode(c, d, n):
+    c = int(c)                
     return utils.find_modulus(c, d, n)
+
+
+def get_public_key_and_secret_key():
+    p = 47
+    q = 71
+    n = p * q
+    phi_n = utils.euler_function(n)
+
+    # choose a number coprime with the Euler function's value of n
+    e = 79
+
+    # calculate the secret key
+    _, secret_key, _ = utils.my_gcd(e, phi_n)
+
+    return n, e, secret_key
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -21,33 +37,23 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     conn, addr =  s.accept()
 
     with conn:
-        print('connection from ', addr)
-        # choose two great prime numbers 
-        p = 47
-        q = 71
-        n = p * q
-        phi_n = utils.euler_function(n)
+        n_pk, e_pk, d_sk = get_public_key_and_secret_key()
 
-        # choose a number coprime with the Euler function's value of n
-        e = 79
-
-        print(f'The public key is: ({n}, {e})')    
-        conn.sendall(str(n).encode('utf-8'))
-        conn.sendall(str(e).encode('utf-8'))
-
-        # calculate the secret key
-        _, secret_key, _ = utils.my_gcd(e, phi_n)
+        print(f'The public key is: ({n_pk}, {e_pk})')    
+        conn.sendall(str(n_pk).encode('utf-8'))
+        conn.sendall(str(e_pk).encode('utf-8'))
 
         print('Waiting for messages...')
 
-        # receiving the encoded message blocks 
-        the_message = ''
-        while (c := conn.recv(32).decode('utf-8')) != 'close':
-            print(f"Received block: {c}")
-            c = int(c)
-            m = decode(c, secret_key, n)
-            the_message += str(m)
+        while True:
+            # receiving the encoded message blocks 
+            the_message = ''
+            while not (c := conn.recv(32).decode('utf-8')).strip('0').startswith('close'):
+                print(f"Received block: {c}")
+                m = decode(c, d_sk, n_pk)
+                the_message += str(m)                                
 
-        print(f'The message is: {int(the_message)}')
-
+            if c == 'close all': break
+            else: print(f'The message is: {int(the_message)}')
+            
         time.sleep(1) 
