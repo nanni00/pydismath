@@ -111,7 +111,7 @@ def dm_euler_function():
 def dm_find_modulus():
     _print_header_footer('Find Modulus')
     a, m, n =_get_input({'a': int, 'm': int, 'n': int}, 'a^m is ? in mod n')
-    r = utils.find_modul(a, m, n)
+    r = utils.find_modulus(a, m, n)
     if type(r) is not int:
         print(str(r))
     else:
