@@ -84,16 +84,15 @@ def dm_diophantine_equation():
 
 def dm_linear_congruence():
     _print_header_footer("Linear Congruence")
-    print("ax -congr- b mod n")
-    a, b, n = _get_input({'a': int, 'b': int, 'n': int})
-    z_sol, zn_sol = utils.linear_congruence(a, b, n)
+    a, b, n = _get_input({'a': int, 'b': int, 'n': int}, "ax -congr- b mod n")
+    sol = utils.linear_congruence(a, b, n)
 
-    if z_sol is None: 
-        print(f"The linear congruence {a}x = {b} mod({n}) hasn't solutions.")
+    if type(sol) is str: 
+        print(sol)
     else:
         print(f"The linear congruence {a}x = {b} mod({n}): ")
-        print(f"\tHas solutions in Z: " + '{' + f"({z_sol[0]} + {z_sol[1]}k), k integer" + '}')
-        print(f"\tHas solutions in Zn: " + ', '.join([str(x) for x in zn_sol]))
+        print(f"\tHas solutions in Z: " + '{' + f"({sol[0][0]} + {sol[0][1]}k), k integer" + '}')
+        print(f"\tHas solutions in Zn: " + ', '.join([str(x) for x in sol[1]]))
 
     _print_header_footer("Linear Congruence", header=False)
 
