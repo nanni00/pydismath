@@ -67,7 +67,7 @@ def fermat_factorization(n):
 
 
 def diofantine_equation(a: int, b: int, c: int):
-    g, x, y = my_gcd(a, b, True)
+    g, x, y = my_gcd(a, b)
 
     if c % g != 0: return None, None, None, None
 
