@@ -31,6 +31,7 @@ def get_public_key_and_secret_key():
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    print(f'Waiting connections on host {HOST}, port {PORT}...')
     s.bind((HOST, PORT))
     s.listen()
     conn, addr =  s.accept()
@@ -57,4 +58,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if c == 'close all': break
             else: print(f'The message is: {int(the_message)}')
             
-        time.sleep(1) 
+        time.sleep(1)
+        print('Connection closed.')

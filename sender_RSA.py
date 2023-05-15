@@ -15,12 +15,13 @@ def encode(m: int, n: int, e: int):
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    print(f'Connection to {HOST}, port {PORT}...', end=' ')
     s.connect((HOST, PORT))
-    print('Receiving public key from server...')
+    print('Connected.')
 
+    print('Receiving public key from server...')
     n_pk = int(s.recv(1024).decode('utf-8'))
     e_pk = int(s.recv(1024).decode('utf-8'))
-
     print(f'The public key is: {n_pk}, {e_pk}')
 
     while True:
@@ -62,4 +63,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         # sending close connection message
         s.send('close'.encode('utf-8'))
         
+    print('Closing connection...', end=' ')
     s.close()
+    print('Connection closed.')
